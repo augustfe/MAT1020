@@ -4,7 +4,9 @@
 	amssymb,			% Extended Symbols
 	enumerate,		    % Enumerate Environments
 	graphicx,			% Include Images
-        minted
+        minted,
+        caption,
+        subcaption
 }
 
 \title{MAT3100 - Oblig 1}
@@ -13,7 +15,7 @@
 
 \renewcommand{\thesection}{Oppgave \arabic{section}}
 \renewcommand{\thesubsection}{\arabic{section}\alph{subsection})}
-\renewcommand{\thesubsubsection}{Solution}
+\renewcommand{\thesubsubsection}{Besvarelse}
 
 \title{MAT1020 - Oblig 1\\Matematikk og bærekraftig forvaltning}
 \author{August Femtehjell}
@@ -28,6 +30,34 @@ I denne oppgaven skal du gjøre en statistisk analyse av kapasitetsfaktordataene
 
 \subsection{}
 Plot alle dataseriene (gjerne som illustrative utsnitt av tidsseriene), og se om det er forskjeller mellom årstidene. Hva kan du si om solkraft nord og sør i Europa og vindkraft på de forskjellige stedene i Norge?
+
+\subsubsection{}
+
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\linewidth]{oblig/figures/Solar/Solar capacity 2014-2019.pdf}
+  \caption{A subfigure}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\linewidth]{oblig/figures/Wind/Wind capacity 2014-2019.pdf}
+  \caption{A subfigure}
+  \label{fig:sub2}
+\end{subfigure}
+\caption{A figure with two subfigures}
+\label{fig:test}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{oblig/figures/Solar/Solar capacity 2014-2019.pdf}
+    \caption{Solkapasitet for perioden 2014-2019.}
+    \includegraphics[width=0.3\textwidth]{oblig/figures/Wind/Wind capacity 2014-2019.pdf}
+    \label{fig:total_solar}
+\end{figure}
 
 \subsection{}
 Finn gjennomsnittlig kapasitetsfaktor for hver sol- og vind-dataserie. Husk å omforme sol-dataene til representative daglige verdier.
