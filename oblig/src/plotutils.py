@@ -68,6 +68,7 @@ class TimeSeriesPlotter:
             title (str): Title of the plot
             mask (np.ndarray, optional): Whether to mask the plot or not. Defaults to None.
         """
+        plt.figure(figsize=(8, 6))
         ax = sns.heatmap(
             X,
             cmap=self.cmap,
@@ -89,6 +90,7 @@ class TimeSeriesPlotter:
             X (DataFrame): Data to plot
             title (str): Title of the plot
         """
+        plt.figure(figsize=(8, 6))
         ax = X.plot(title=title, ylabel=self.datalabel)
         if self.save:
             plt.savefig(self.save / f"{title}.pdf", bbox_inches="tight")
