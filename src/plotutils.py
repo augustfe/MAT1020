@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib as mpl
 from pathlib import Path
 from pandas import DataFrame
-from matplotlib import colormaps, pyplot as plt, cm
+import matplotlib.pyplot as plt
 
 
 # Set up for LaTeX rendering
@@ -108,12 +108,7 @@ class TimeSeriesPlotter:
             year (int, optional): Year of the data. Default to None.
             window (int, optional): Window size for rolling mean. Defaults to 30.
         """
-        if year:
-            X = self.X[self.X.index.year == year]
-            base_title = f"{self.datalabel} {year}"
-        else:
-            X = self.X
-            base_title = f"{self.datalabel} {self.period}"
+        X, base_title = self.choose_data(year)
         rolling_title = f"{base_title} - Rolling {window} day"
         self.plot_df(X.rolling(window=window).mean(), rolling_title)
 
@@ -126,18 +121,12 @@ class TimeSeriesPlotter:
         Args:
             year (int, optional): Year of the data. Default to None.
         """
-        if year:
-            X = self.X[self.X.index.year == year]
-            title = f"{year}"
-        else:
-            X = self.X
-            title = f"{self.period}"
+        X, base_title = self.choose_data(year)
+        season_title = f"{base_title} - Mean by Season"
 
         groups = self.month_by_season[X.index.month]
         X_season = X.copy()
         X_season.insert(0, "Season", groups)
-
-        season_title = f"{self.datalabel} {title} - Mean by Season"
 
         self.plot_heatmap(X_season.groupby(["Season"]).mean(), season_title)
 
@@ -147,12 +136,9 @@ class TimeSeriesPlotter:
         Args:
             year (int, optional): Year of the data. Default to None.
         """
-        if year:
-            cov = self.X[self.X.index.year == year].cov()
-            cov_title = f"{self.datalabel} {year} - Covariance"
-        else:
-            cov = self.X.cov()
-            cov_title = f"{self.datalabel} {self.period} - Covariance"
+        X, base_title = self.choose_data(year)
+        cov = X.cov()
+        cov_title = f"{base_title} - Covariance"
 
         mask = np.triu(np.ones_like(cov, dtype=bool), k=1)
         self.plot_heatmap(cov, cov_title, mask=mask)
@@ -166,12 +152,24 @@ class TimeSeriesPlotter:
         Args:
             year (int, optional): Year of the data. Default to None.
         """
-        if year:
-            corr = self.X[self.X.index.year == year].corr()
-            corr_title = f"{self.datalabel} {year} - Correlation"
-        else:
-            corr = self.X.corr()
-            corr_title = f"{self.datalabel} {self.period} - Correlation"
+        X, base_title = self.choose_data(year)
+        corr = X.corr()
+        corr_title = f"{base_title} - Correlation"
+
         mask = np.triu(np.ones_like(corr, dtype=bool))
 
         self.plot_heatmap(corr, corr_title, mask=mask)
+
+    def choose_data(self, year: int | None) -> None:
+        """Pick data to plot.
+
+        Args:
+            year (int, None): Year to plot
+        """
+        if year:
+            data = self.X[self.X.index.year == year]
+            base_title = f"{self.datalabel} {year}"
+        else:
+            data = self.X
+            base_title = f"{self.datalabel} {self.period}"
+        return data, base_title
